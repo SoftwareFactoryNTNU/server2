@@ -1,0 +1,74 @@
+<div class="container">
+  <div class="panel panel-default">
+    <div class="panel-heading">Crash</div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-sm-9">
+          <h2>pla</h2>
+          <section class="tab" ng-controller="CrashCtrl as tab">
+            <ui-gmap-google-map center="map.center" zoom="map.zoom" options="options"></ui-gmap-google-map>
+
+          <ul class="nav nav-pills">
+            <li ng-class="{active: tab.isSet(1)}">
+              <a href ng-click="tab.setTab(1)">Owner</a></li>
+            <li ng-class="{active: tab.isSet(2)}">
+              <a href ng-click="tab.setTab(2)">Crash spesific</a></li>
+            <li ng-class="{active: tab.isSet(3)}" >
+              <a href ng-click="tab.setTab(3)">Comments</a></li>
+          </ul>
+          <div ng-show="tab.isSet(1)">
+            <h4>Personal information</h4>
+            <blockquote>Name {{accident.person}}</blockquote>
+          </div>
+          <div ng-show="tab.isSet(2)">
+            <h4>Accident</h4>
+            <blockquote>Details: {{accident.detail}}</blockquote>
+          </div>
+          <div ng-show="tab.isSet(3) ">
+            <h4>Comments</h4>
+            <blockquote>
+              <div ng-controller='NvdController'>
+                  <nvd3 options='options' data='data'></nvd3>
+              </div>
+              <table>
+                <tr ng-repeat="x in speed">
+                  <td>{{ x.Lat }}</td>
+                  <td>{{ x.Lng }}</td>
+                  <td>{{ x.Time }}</td>
+                </tr>
+              </table>
+            <iframe id="myframe" width="700" height="500" src="http://folk.ntnu.no/mariuom/blackbox.php" frameborder="0" allowfullscreen scrolling="no"></iframe>
+            </blockquote>
+          </div>
+        </section>
+
+    <!--    <ui-gmap-google-map center='{expression}'
+                    control='{Object}'
+                    zoom='{expression}'
+                    dragging='{expression}'
+                    refresh='{expression}'
+                    options='{expression}'
+                    events='{expression}'
+                    bounds='{expression}'
+                    pan='{string or boolean}'
+        >
+
+   other ui-gmap-directives here
+
+  </ui-gmap-google-map>-->
+
+
+      <!--    <div ng-controller="MapCtrl">
+            <div id="map"></div>
+            <div id="class" ng-repeat="marker in markers | orderBy : 'title'">
+                 <a href="#" ng-click="openInfoWindow($event, marker)">{{marker.title}}</a>
+            </div>
+        </div>
+-->
+<!--
+      <div id="map" class="gm-style" style="height: 400px; position: relative; overflow: hidden; transform: translateZ(0px); background-color: rgb(229, 227, 223);"></div>-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
