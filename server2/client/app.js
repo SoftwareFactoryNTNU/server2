@@ -1,4 +1,4 @@
-angular.module('MyApp', ['ngResource', 'ngMessages', 'ui.router', 'mgcrea.ngStrap', 'satellizer', 'nvd3', 'ngCookies'])
+angular.module('MyApp', ['ngResource', 'ngMessages', 'ui.router', 'mgcrea.ngStrap', 'satellizer', 'nvd3', 'ngCookies', 'ui.bootstrap'])
   .config(function($stateProvider, $urlRouterProvider, $authProvider) {
 
     $stateProvider
@@ -24,13 +24,23 @@ angular.module('MyApp', ['ngResource', 'ngMessages', 'ui.router', 'mgcrea.ngStra
       .state('crash', {
         url: '/crash',
         templateUrl: 'partials/crash.html',
+        controller: 'CrashCtrl',
+        abstract: true
+      })
+      .state('crash.overview', {
+        url: '/overview',
+        templateUrl: 'partials/overview.html',
         controller: 'CrashCtrl'
       })
-      .state('crash.comments', {
-        url: '/crash/comments',
-        templateUrl: 'partials/crash.html',
-        controller: 'CrashCtrl',
-        views: ''
+      .state('crash.notes', {
+        url: '/notes',
+        templateUrl: 'partials/notes.html',
+        controller: 'CrashCtrl'
+      })
+      .state('crash.owner', {
+        url: '/owner',
+        templateUrl: 'partials/owner.html',
+        controller: 'CrashCtrl'
       })
       .state('profile', {
         url: '/profile',

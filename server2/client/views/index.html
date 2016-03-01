@@ -11,6 +11,7 @@
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
   <link href="//cdn.jsdelivr.net/animatecss/3.2.0/animate.css" rel="stylesheet">
   <link href="/stylesheets/styles.css" rel="stylesheet">
+  <link href="/bower_components/angular-bootstrap/ui-bootstrap-csp.css" rel="stylesheet">
   <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.css">
 
 </head>
@@ -29,7 +30,7 @@
   <ul ng-if="!isAuthenticated()" class="nav navbar-nav pull-right">
     <li><a href="/#/login">Login</a></li>
     <li><a href="/#/signup">Sign up</a></li>
-    <li><a href="/#/crash">Crash report</a></li>
+    <li><a href="/#/crash/owner">Crash report</a></li>
   </ul>
   <ul ng-if="isAuthenticated()" class="nav navbar-nav pull-right">
     <li><a href="/#/logout">Logout</a></li>
@@ -204,6 +205,8 @@
        <script src="/vendor/angular-strap.tpl.js"></script>
        <script src="/vendor/satellizer.js"></script>
        <script src="/vendor/bower_components/angular-cookies/angular-cookies.js"></script>
+       <script src="/bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+       <script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 
        <script src="/bower_components/d3/d3.js"></script>
        <script src="/bower_components/nvd3/build/nv.d3.js"></script>

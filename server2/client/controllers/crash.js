@@ -1,5 +1,5 @@
 angular.module('MyApp')
-  .controller('CrashCtrl', function($scope, $http, $auth, $alert, $cookies) {
+  .controller('CrashCtrl', function($scope, $http, $auth, $alert, $cookies, $state) {
 
     this.tab = 1
     if ($cookies.get('initTab') != null){
@@ -22,6 +22,11 @@ angular.module('MyApp')
      // $state.reload();
      $cookies.put('initTab', '3');
      $scope.reload();
+   }
+
+   $scope.change_state = function(state) {
+     var current = 'crash.' + state;
+     $state.go(current)
    }
 
    // -- Depricated --

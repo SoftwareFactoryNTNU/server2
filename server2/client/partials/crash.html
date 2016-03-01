@@ -3,47 +3,19 @@
     <div class="panel-heading">Crash</div>
     <div class="panel-body">
       <div class="row">
-        <div class="col-lg container-fluid">
-          <h2>pla</h2>
-          <section class="tab" ng-controller="CrashCtrl as tab">
-          <ul class="nav nav-pills">
-            <li ng-class="{active: tab.isSet(1)}">
-              <a href ng-click="tab.setTab(1)">Owner</a></li>
-            <li ng-class="{active: tab.isSet(2)}">
-              <a href ng-click="tab.setTab(2)">Crash spesific</a></li>
-            <li ng-class="{active: tab.isSet(3)}" ng-click="tab.reloadPage()">
-              <a href ng-click="tab.setTab(3)">Overview</a></li>
-          </ul>
-          <div ng-show="tab.isSet(1)">
-            <h4>Personal information</h4>
-            <blockquote>Name {{accident.person}}</blockquote>
-          </div>
-          <div ng-show="tab.isSet(2)">
-            <h4>Accident</h4>
-            <blockquote>Details: {{accident.detail}}</blockquote>
-          </div>
-          <div ng-show="tab.isSet(3) ">
-            <h4>Crash details</h4>
-            <blockquote>
-              <div ng-controller='NvdController'>
-                  <nvd3 options='options' data='data'></nvd3>
-              </div>
-              <table>
-                <tr ng-repeat="x in speed">
-                  <td>{{ x.Lat }}</td>
-                  <td>{{ x.Lng }}</td>
-                  <td>{{ x.Time }}</td>
-                </tr>
-              </table>
-            </blockquote>
-            <!-- HOT fix (shit start)-->
-            <button ng-click="reloadPage()" type="button" class="btn btn-success">Show map</button>
-            <button ng-click="reloadPage()" type="button" class="btn btn-primary">Restart animation</button>
-            <!-- (shit end) -->
-            <div id="map" class="gm-style" style="height: 400px; position: relative; overflow: hidden; transform: translateZ(0px); background-color: rgb(229, 227, 223);"></div>
-          </div>
-        </section>
-      </div>
+        <uib-tabset>
+          <uib-tab heading="Owner" ng-click = "change_state('owner')">
+              <div ui-view></div>  <!-- ex: <div ui-view="tab1"></div> -->
+          </uib-tab>
+          <uib-tab heading="Notes" ng-click = "change_state('notes')">
+              <div ui-view></div>  <!-- ex: <div ui-view="tab1"></div> -->
+          </uib-tab>
+          <uib-tab heading="Overview" ng-click = "change_state('overview')">
+              <div ui-view></div>  <!-- ex: <div ui-view="tab1"></div> -->
+          </uib-tab>
+      </uib-tabset>
+  <!--About section-->
+<!-- /#wrapper -->
       </div>
     </div>
   </div>
