@@ -42,6 +42,7 @@ angular.module('MyApp')
        chart: {
            type: 'lineChart',
            height: 450,
+           width: '100%',
            margin : {
                top: 20,
                right: 20,

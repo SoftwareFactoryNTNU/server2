@@ -12,6 +12,15 @@ a {
   color: #000;
 }
 
+@media (min-width: 768px) {
+  .owner-input {
+    width: 95%;
+  }
+  #map {
+    width: 97%;
+  }
+}
+
 .text-muted {
   color: #90939a;
 }
@@ -382,6 +391,8 @@ a {
     display: block;
     overflow: visible;
   }
+
+
 
   #myframe {
     display:block;

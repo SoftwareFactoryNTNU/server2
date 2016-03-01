@@ -1,25 +1,29 @@
 
 <div class="container">
-  <h4>Crash details</h4>
-  <blockquote>
-    <div ng-controller='NvdController'>
-        <nvd3 options='options' data='data'></nvd3>
-    </div>
-    <table>
-      <tr ng-repeat="x in speed">
-        <td>{{ x.Lat }}</td>
-        <td>{{ x.Lng }}</td>
-        <td>{{ x.Time }}</td>
-      </tr>
-    </table>
-  </blockquote>
-  <!-- HOT fix (shit start)-->
-  <button ng-click="reloadPage()" type="button" class="btn btn-success">Show map</button>
-  <button ng-click="reloadPage()" type="button" class="btn btn-primary">Restart animation</button>
-  <!-- (shit end) -->
   <div class="row">
     <div class="col-sm-12">
-      <div id="map" class="gm-style" style="height: 400px; position: relative; overflow: hidden; transform: translateZ(0px); background-color: rgb(229, 227, 223);"></div>
+      <h4>Crash details</h4>
+      <blockquote>
+        <div ng-controller='NvdController'>
+            <nvd3 options='options' data='data'></nvd3>
+        </div>
+        <table>
+          <tr ng-repeat="x in speed">
+            <td>{{ x.Lat }}</td>
+            <td>{{ x.Lng }}</td>
+            <td>{{ x.Time }}</td>
+          </tr>
+        </table>
+      </blockquote>
+      <!-- HOT fix (shit start)-->
+      <button ng-click="reloadPage()" type="button" class="btn btn-success">Show map</button>
+      <button ng-click="reloadPage()" type="button" class="btn btn-primary">Restart animation</button>
+      <!-- (shit end) -->
+      <div class="row">
+        <div class="col-sm-12">
+          <div id="map" class="gm-style" style="height: 400px; position: relative; overflow: hidden; transform: translateZ(0px); background-color: rgb(229, 227, 223);"></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
