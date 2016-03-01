@@ -36,23 +36,10 @@
   </ul>
 </div>
 
+<!--<div ng-controller="CrashCtrl">-->
 
-
-<div ng-controller="CrashCtrl">
-
+<!-- Load view -->
 <div ui-view class="fadeZoom"></div>
-<!--<ui-gmap-google-map center="map.center" zoom="map.zoom" options="options"></ui-gmap-google-map>-->
-
-      <!-- Google Maps
-      <script src="http://maps.google.com/maps/api/js?"></script>-->
-
-        <!-- Angular-google-maps
-      <script src='/node_modules/angular-google-maps/node_modules/lodash/lodash.js'></script>
-      <script src='/node_modules/angular-google-maps/node_modules/angular-simple-logger/dist/angular-simple-logger.js'></script>
-      <script src='/node_modules/angular-google-maps/dist/angular-google-maps.js'></script>
-
-
--->
 
 <script type="text/javascript" charset="UTF-8"> //map js
   //Take database data into javascript
@@ -63,7 +50,7 @@
   console.log(speed);
   console.log(cords);
 
-                var map;
+               var map;
                var marker;
                var startPos = [62.550045646, 12.050345356];
                var speed = 50; //km/h should be read from db
@@ -72,6 +59,9 @@
                var target = 0;
                var km_h = speedArray[target];
                var infowindow;
+               var first;
+               var secound;
+               var i;
                //thanks to Padre Mucho a jsfiddler with style for helping out with the anim
                /**
                 * animateCar - makes the car/marker move across the map
@@ -94,7 +84,7 @@
                    var distance = google.maps.geometry.spherical.computeDistanceBetween(
                      dest, marker.position); //in meters
                      var numStep = distance / step;
-                     var i = 0;
+                      i = 0;
                      var deltaLat = (coords[target][0] - lat) / numStep;
                      var deltaLng = (coords[target][1] - lng) / numStep;
                      function moveMarker(){
@@ -103,7 +93,7 @@
                        i += step;
                        if (i<distance){
                          marker.setPosition(new google.maps.LatLng(lat, lng));
-                         setTimeout(moveMarker, delay);
+                         first = setTimeout(moveMarker, delay);
                        }
                        else{
                          marker.setPosition(dest);
@@ -115,7 +105,7 @@
                            km_h = speedArray[0];
                            updateInfo();
                          }
-                         setTimeout(goTo, delay);
+                         secound = setTimeout(goTo, delay);
                        }
                      }
                      moveMarker();
@@ -129,11 +119,29 @@
                  setTimeout(centerView, panDelay)
                  map.panTo(marker.getPosition());
                }
+
+              // -- Depricated -- does not work anymore(here for reference)
+               function restartAnimation(){
+                 console.log("tried to restart animation")
+                 startPos = [62.550045646, 12.050345356];
+                 speed = 50; //km/h should be read from db
+                 delay = 100;
+                 panDelay = 10000;   //how often the screen sould recenter
+                 target = 0;
+                 i=0;
+                 km_h = speedArray[target]
+                 clearTimeout(first);
+                 clearTimeout(secound);
+                 first = null;
+                 secound = null;
+                 animateCar(marker, cords, speed)
+                }
+
                centerView()
                function updateInfo(){
                  console.log(km_h)
                  infowindow.close();
-                 infowindow.setContent("<h3>" + "OLED" + "</h3>" + "<p>Speed: " + speedArray[target] + " <br>Description: "+ "Nan" + "</p>");
+                 infowindow.setContent("<h3>" + "OLED" + "</h3>" + "<p>Speed: " + speedArray[target] + " <br>Description: "+ "Nan - superhack" + "</p>");
                  infowindow.open(map, marker);
                  //infowindow.open(map, marker);
                }
@@ -143,6 +151,8 @@
                   * @return {type}  description
                   */
                  function initMap() {
+                   google.maps.event.addDomListener(window, "load", initialize);
+                   function initialize(){
                     map = new google.maps.Map(document.getElementById('map'), {
                      center: {lat: 62.5500, lng: 12.050},
                      zoom: 16,
@@ -155,7 +165,7 @@
                    });
                    infowindow = new google.maps.InfoWindow();
 
-                 infowindow.setContent("<h3>" + "OLED" + "</h3>" + "<p>Speed: " + km_h + " <br>Description: "+ "Nan" + "</p>");
+                 infowindow.setContent("<h3>" + "OLED" + "</h3>" + "<p>Speed: " + km_h + " <br>Description: "+ "Nan - superhack" + "</p>");
                  infowindow.open(map, marker);
                    google.maps.event.addListenerOnce(map, 'idle', function() {
                      console.log(cords);
@@ -166,17 +176,26 @@
                     google.maps.event.trigger(map, 'resize');
                   });
         //infoWindow.open(map);
-               }
+      }}
+
+
+      function myFunction() {
+          location.reload();
+      }
+
+
+
 
 </script>
 
+      <!-- Google maps-->
       <script async defer
        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwtgP3ap8vcxFVkkHwh5bhlM85Ot2YYYQ&libraries=geometry&signed_in=true&callback=initMap"></script>
 
       <!-- Angular JS -->
       <script src="/vendor/angular.js"></script>
-       <!-- Third-party Libraries -->
 
+       <!-- Third-party Libraries -->
        <script src="/vendor/angular-messages.js"></script>
        <script src="/vendor/angular-resource.js"></script>
        <script src="/vendor/angular-animate.js"></script>
@@ -184,10 +203,7 @@
        <script src="/vendor/angular-strap.js"></script>
        <script src="/vendor/angular-strap.tpl.js"></script>
        <script src="/vendor/satellizer.js"></script>
-
-       <!-- -->
-
-
+       <script src="/vendor/bower_components/angular-cookies/angular-cookies.js"></script>
 
        <script src="/bower_components/d3/d3.js"></script>
        <script src="/bower_components/nvd3/build/nv.d3.js"></script>

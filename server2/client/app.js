@@ -1,12 +1,5 @@
-angular.module('MyApp', ['ngResource', 'ngMessages', 'ui.router', 'mgcrea.ngStrap', 'satellizer', 'nvd3'])
+angular.module('MyApp', ['ngResource', 'ngMessages', 'ui.router', 'mgcrea.ngStrap', 'satellizer', 'nvd3', 'ngCookies'])
   .config(function($stateProvider, $urlRouterProvider, $authProvider) {
-
-  /*  uiGmapGoogleMapApiProvider.configure({uiGmapGoogleMapApiProvider   , 'uiGmapgoogle-maps'
-        key: 'AIzaSyCwtgP3ap8vcxFVkkHwh5bhlM85Ot2YYYQ',
-        v: '3.40', //defaults to latest 3.X anyhow
-        libraries: 'geometry,visualization'
-    });*/
-
 
     $stateProvider
       .state('home', {
