@@ -76,6 +76,7 @@ var routes = function(app) {
        if (!user) {
          return res.status(400).send({ message: 'PI not found' });
        }
+       console.log(req.body);
        user.crash_points.concat(req.body.lines);
        user.save(function(err) {
          if (err) {
