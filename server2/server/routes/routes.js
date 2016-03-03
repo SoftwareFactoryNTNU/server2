@@ -70,6 +70,22 @@ var routes = function(app) {
      })
    });
 
+   app.post('/api/add_bulk_data', function(req, res) {
+
+     User.findOne({ pi_id: req.body.lines[0].pi_id }, function(err, user) {
+       if (!user) {
+         return res.status(400).send({ message: 'PI not found' });
+       }
+       user.crash_points.concat(req.body.lines);
+       user.save(function(err) {
+         if (err) {
+           throw err;
+         }
+         return res.status(200).end();
+       })
+     })
+   });
+
   app.get('/api/me', auth.ensureAuthenticated, function(req, res) {
     User.findById(req.user, function(err, user) {
       res.send(user);
