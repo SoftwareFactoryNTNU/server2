@@ -4,6 +4,23 @@ var bcrypt = require('bcryptjs');
 var userSchema = new mongoose.Schema({
   email: { type: String, unique: true, lowercase: true },
   password: { type: String, select: false },
+  first_name: String,
+  last_name: String,
+  social_security_number: Number,
+  address: String,
+  postal_code: Number,
+  phone_number: Number,
+  email: String,
+  crash_points: [{
+    timestamp: Number,
+    latitude: Number,
+    longditude: Number,
+    engine_speed: Number,
+    vehicle_speed: Number,
+    accelerator_pedal_position: Number,
+    brake_pedal_status: Boolean
+  }],
+  pi_id: String,
   displayName: String,
   picture: String,
   facebook: String,

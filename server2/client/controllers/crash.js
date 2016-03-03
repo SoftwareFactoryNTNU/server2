@@ -1,5 +1,16 @@
 angular.module('MyApp')
-  .controller('CrashCtrl', function($scope, $http, $auth, $alert, $cookies, $state) {
+  .controller('CrashCtrl', function($scope, $http, $auth, $alert, $cookies, $state, Account) {
+
+    $scope.personalData = {};
+
+    Account.getProfile()
+    .then(function(response) {
+      console.log(response);
+      $scope.personalData = response.data;
+    })
+    .catch(function(response) {
+      showAlert('Could not load personal data..')
+    })
 
     this.tab = 1
     if ($cookies.get('initTab') != null){
@@ -13,6 +24,26 @@ angular.module('MyApp')
 
    this.isSet = function(tabName){
      return this.tab === tabName;
+   };
+
+   $scope.updateOwner = function() {
+     var data = {
+       first_name: $scope.personalData.first_name,
+       last_name: $scope.personalData.last_name,
+       social_security_number: $scope.personalData.social_security_number,
+       address: $scope.personalData.address,
+       postal_code: $scope.personalData.postal_code,
+       phone_number: $scope.personalData.phone_number,
+       email: $scope.personalData.email
+     };
+     console.log(data);
+     Account.updateOwner(data)
+     .then(function(response) {
+       showAlert('Personal information updated!', 4);
+     }) .catch(function(response) {
+       console.log(response);
+       showAlert('Something went wrong! Please try again.', 4);
+     })
    };
 
    $scope.reloadPage = function(){window.location.reload();}
@@ -32,6 +63,15 @@ angular.module('MyApp')
    // -- Depricated --
    $scope.restartAnim = function() {
      // restartAnimation();
+   }
+
+   function showAlert(content, duration) {
+     $alert({
+       content: content,
+       animation: 'fadeZoomFadeDown',
+       type: 'material',
+       duration: duration
+     });
    }
 
   })

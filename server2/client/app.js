@@ -25,22 +25,74 @@ angular.module('MyApp', ['ngResource', 'ngMessages', 'ui.router', 'mgcrea.ngStra
         url: '/crash',
         templateUrl: 'partials/crash.html',
         controller: 'CrashCtrl',
-        abstract: true
+        abstract: true,
+        resolve: {
+          authenticated: function($q, $location, $auth) {
+            var deferred = $q.defer();
+
+            if (!$auth.isAuthenticated()) {
+              $location.path('/login');
+            } else {
+              deferred.resolve();
+            }
+
+            return deferred.promise;
+          }
+        }
       })
       .state('crash.overview', {
         url: '/overview',
         templateUrl: 'partials/overview.html',
-        controller: 'CrashCtrl'
+        controller: 'CrashCtrl',
+        resolve: {
+          authenticated: function($q, $location, $auth) {
+            var deferred = $q.defer();
+
+            if (!$auth.isAuthenticated()) {
+              $location.path('/login');
+            } else {
+              deferred.resolve();
+            }
+
+            return deferred.promise;
+          }
+        }
       })
       .state('crash.notes', {
         url: '/notes',
         templateUrl: 'partials/notes.html',
-        controller: 'CrashCtrl'
+        controller: 'CrashCtrl',
+        resolve: {
+          authenticated: function($q, $location, $auth) {
+            var deferred = $q.defer();
+
+            if (!$auth.isAuthenticated()) {
+              $location.path('/login');
+            } else {
+              deferred.resolve();
+            }
+
+            return deferred.promise;
+          }
+        }
       })
       .state('crash.owner', {
         url: '/owner',
         templateUrl: 'partials/owner.html',
-        controller: 'CrashCtrl'
+        controller: 'CrashCtrl',
+        resolve: {
+          authenticated: function($q, $location, $auth) {
+            var deferred = $q.defer();
+
+            if (!$auth.isAuthenticated()) {
+              $location.path('/login');
+            } else {
+              deferred.resolve();
+            }
+
+            return deferred.promise;
+          }
+        }
       })
       .state('profile', {
         url: '/profile',

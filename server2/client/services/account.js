@@ -9,6 +9,9 @@ angular.module('MyApp')
       },
       updatePassword: function(profileData) {
         return $http.post('/api/me', profileData);
+      },
+      updateOwner: function(data) {
+        return $http.post('/api/update_owner', data)
       }
     };
   });

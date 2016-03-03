@@ -1,5 +1,5 @@
 angular.module('MyApp')
-  .controller('LoginCtrl', function($scope, $alert, $auth) {
+  .controller('LoginCtrl', function($scope, $alert, $auth, $location) {
     $scope.login = function() {
       $auth.login({ email: $scope.email, password: $scope.password })
         .then(function() {
@@ -9,6 +9,7 @@ angular.module('MyApp')
             type: 'material',
             duration: 3
           });
+          $location.path('/crash/owner');
         })
         .catch(function(response) {
           $alert({
