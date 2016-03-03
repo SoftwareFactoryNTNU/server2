@@ -11,15 +11,7 @@ var userSchema = new mongoose.Schema({
   postal_code: Number,
   phone_number: Number,
   email: String,
-  crash_points: [{
-    timestamp: Number,
-    latitude: Number,
-    longditude: Number,
-    engine_speed: Number,
-    vehicle_speed: Number,
-    accelerator_pedal_position: Number,
-    brake_pedal_status: Boolean
-  }],
+  crash_points: {type: Array, default: []},
   pi_id: String,
   displayName: String,
   picture: String,

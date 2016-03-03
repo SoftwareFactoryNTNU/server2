@@ -43,8 +43,9 @@ var routes = function(app) {
      });
    });
 
-   app.post('/api/add_data', function() {
-     User.find({ pi_id: req.body.pi_id }, function(err, user) {
+   app.post('/api/add_data', function(req, res) {
+
+     User.findOne({ pi_id: req.body.pi_id }, function(err, user) {
        if (!user) {
          return res.status(400).send({ message: 'PI not found' });
        }
@@ -57,6 +58,8 @@ var routes = function(app) {
          accelerator_pedal_position: req.body.acceleratorPedalPosition,
          brake_pedal_status: req.body.brakePedalStatus
        };
+       console.log(user);
+       console.log(user.crash_points);
        user.crash_points.push(point);
        user.save(function(err) {
          if (err) {
@@ -65,7 +68,7 @@ var routes = function(app) {
          return res.status(200).end();
        })
      })
-   })
+   });
 
   app.get('/api/me', auth.ensureAuthenticated, function(req, res) {
     User.findById(req.user, function(err, user) {
@@ -76,7 +79,8 @@ var routes = function(app) {
   app.post('/api/create_user', function(req, res) {
     var newUser = new User({
       email: req.body.email,
-      password: req.body.password
+      password: req.body.password,
+      pi_id: "123"
     });
 
     newUser.save(function(err) {

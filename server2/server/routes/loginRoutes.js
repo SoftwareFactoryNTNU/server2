@@ -35,6 +35,7 @@ var loginRoutes = function(app) {
    |--------------------------------------------------------------------------
    */
   app.post('/auth/signup', function(req, res) {
+    return res.status(409).send({message: 'Not allowed to create user'});
     User.findOne({ email: req.body.email }, function(err, existingUser) {
       if (existingUser) {
         return res.status(409).send({ message: 'Email is already taken' });
