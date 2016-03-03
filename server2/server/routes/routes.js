@@ -50,13 +50,13 @@ var routes = function(app) {
          return res.status(400).send({ message: 'PI not found' });
        }
        var point = {
-         timestamp: req.body.timeStamp,
+         timestamp: req.body.timestamp,
          latitude: req.body.latitude,
          longditude: req.body.longitude,
          engine_speed: req.body.engineSpeed,
          vehicle_speed: req.body.vehicleSpeed,
-         accelerator_pedal_position: req.body.acceleratorPedalPosition,
-         brake_pedal_status: req.body.brakePedalStatus
+         accelerator_pedal_position: req.body.acceleratorPedal,
+         brake_pedal_status: req.body.breakingPedal
        };
        console.log(user);
        console.log(user.crash_points);
