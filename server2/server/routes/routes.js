@@ -76,8 +76,18 @@ var routes = function(app) {
        if (!user) {
          return res.status(400).send({ message: 'PI not found' });
        }
-       console.log(req.body);
-       user.crash_points.concat(req.body.lines);
+       for (i = 0; i < req.body.lines.length; i++) {
+         var point = {
+           timestamp: req.body.lines[i].timestamp,
+           latitude: req.body.lines[i].latitude,
+           longditude: req.body.lines[i].longitude,
+           engine_speed: req.body.lines[i].engineSpeed,
+           vehicle_speed: req.body.lines[i].vehicleSpeed,
+           accelerator_pedal_position: req.body.lines[i].acceleratorPedal,
+           brake_pedal_status: req.body.lines[i].breakingPedal
+         };
+         user.crash_points.push(point);
+       }
        user.save(function(err) {
          if (err) {
            throw err;
