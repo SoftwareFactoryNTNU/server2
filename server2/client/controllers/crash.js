@@ -26,6 +26,22 @@ angular.module('MyApp')
      return this.tab === tabName;
    };
 
+   // How to add a note to a spesific crash
+   $scope.updateNotes = function() {
+     var data = {
+       note: $scope.personalData.note,
+       last_name: $scope.personalData.last_name,
+     };
+     console.log(data);
+     Account.updateOwner(data)
+     .then(function(response) {
+       showAlert('Note has been added', 4);
+     }) .catch(function(response) {
+       console.log(response);
+       showAlert('Something went wrong! Please try again.', 4);
+     })
+   };
+
    $scope.updateOwner = function() {
      var data = {
        first_name: $scope.personalData.first_name,
