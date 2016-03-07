@@ -29,11 +29,12 @@ angular.module('MyApp')
    // How to add a note to a spesific crash
    $scope.updateNotes = function() {
      var data = {
-       note: $scope.personalData.note,
-       last_name: $scope.personalData.last_name,
+       note: $scope.crashData.note
+       // + relation to crash
+       // Hwo made the note
      };
      console.log(data);
-     Account.updateOwner(data)
+     Account.updateNotes(data)
      .then(function(response) {
        showAlert('Note has been added', 4);
      }) .catch(function(response) {

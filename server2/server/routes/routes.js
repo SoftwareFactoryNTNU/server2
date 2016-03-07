@@ -43,14 +43,18 @@ var routes = function(app) {
      });
    });
 
-   // -- moe's try to add notes --
+   // -- moe's try to add notes --  crashData.note
    //  How do I add a note to a spesific crash?
    app.post('/api/update_notes', auth.ensureAuthenticated, function(req, res) {
      User.findById(req.user, function(err, user) {
        if (!user) {
          return res.status(400).send({ message: 'User not found' });
        }
-       user.notes = req.body.note || user.note;
+       var note = {
+         content: req.body.note || user.note,
+         crash_points: //reference to the crashe chosen
+       }
+       user.crash_notes.push(note);
        user.save(function(err) {
          res.status(200).end();
        });
