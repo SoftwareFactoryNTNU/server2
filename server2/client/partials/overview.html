@@ -2,26 +2,31 @@
 <div class="container">
   <div class="row">
     <div class="col-sm-12">
-      <h4>Crash details</h4>
-      <blockquote>
-        <div ng-controller='NvdController'>
-            <nvd3 options='options' data='data'></nvd3>
+      <div class="row">
+        <div class="col-sm-6">
+            <div>
+                <nvd3 options='options' data='data'></nvd3>
+            </div>
         </div>
-        <table>
-          <tr ng-repeat="x in speed">
-            <td>{{ x.Lat }}</td>
-            <td>{{ x.Lng }}</td>
-            <td>{{ x.Time }}</td>
-          </tr>
-        </table>
-      </blockquote>
+        <div class="col-sm-6">
+          <div class="row">
+            <div>
+                <nvd3 options='options1' data='data1'></nvd3>
+            </div>
+            <div>
+                <nvd3 options='options2' data='data2'></nvd3>
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- HOT fix (shit start)-->
-      <button ng-click="reloadPage()" type="button" class="btn btn-success">Show map</button>
-      <button ng-click="reloadPage()" type="button" class="btn btn-primary">Restart animation</button>
+      <button ng-click="restartAnimation()" type="button" class="btn btn-primary">Restart animation</button>
       <!-- (shit end) -->
       <div class="row">
         <div class="col-sm-12">
-          <div id="map" class="gm-style" style="height: 400px; position: relative; overflow: hidden; transform: translateZ(0px); background-color: rgb(229, 227, 223);"></div>
+          <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" events="map.events">
+                <ui-gmap-marker idKey = "123" coords="map.marker" icon="map.marker.icon" idkey="map.marker.id"></ui-gmap-marker>
+          </ui-gmap-google-map>
         </div>
       </div>
     </div>

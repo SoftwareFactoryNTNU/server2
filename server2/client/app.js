@@ -1,4 +1,4 @@
-angular.module('MyApp', ['ngResource', 'ngMessages', 'ui.router', 'mgcrea.ngStrap', 'satellizer', 'nvd3', 'ngCookies', 'ui.bootstrap'])
+angular.module('MyApp', ['ngResource', 'ngMessages', 'ui.router', 'mgcrea.ngStrap', 'satellizer', 'nvd3', 'ngCookies', 'ui.bootstrap', 'uiGmapgoogle-maps'])
   .config(function($stateProvider, $urlRouterProvider, $authProvider) {
 
     $stateProvider
@@ -43,7 +43,6 @@ angular.module('MyApp', ['ngResource', 'ngMessages', 'ui.router', 'mgcrea.ngStra
       .state('crash.overview', {
         url: '/overview',
         templateUrl: 'partials/overview.html',
-        controller: 'CrashCtrl',
         resolve: {
           authenticated: function($q, $location, $auth) {
             var deferred = $q.defer();
@@ -61,7 +60,6 @@ angular.module('MyApp', ['ngResource', 'ngMessages', 'ui.router', 'mgcrea.ngStra
       .state('crash.notes', {
         url: '/notes',
         templateUrl: 'partials/notes.html',
-        controller: 'CrashCtrl',
         resolve: {
           authenticated: function($q, $location, $auth) {
             var deferred = $q.defer();
@@ -79,7 +77,6 @@ angular.module('MyApp', ['ngResource', 'ngMessages', 'ui.router', 'mgcrea.ngStra
       .state('crash.owner', {
         url: '/owner',
         templateUrl: 'partials/owner.html',
-        controller: 'CrashCtrl',
         resolve: {
           authenticated: function($q, $location, $auth) {
             var deferred = $q.defer();
