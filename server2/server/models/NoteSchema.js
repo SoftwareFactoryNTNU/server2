@@ -2,13 +2,13 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var noteSchema = new Schema({
-  user_id: {
-    type: Schema.ObjectId,
-    ref: 'user'   //is this the right ref??
-  },
+  user_id: {type: String, index: true},//{
+    //type: Schema.ObjectId,
+  //  ref: 'user'   //is this the right ref??
+//  },
   crash_id: String,
   date: Date,
-  text: String
+  txt: String
 });
 
 

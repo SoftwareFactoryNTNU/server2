@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var User = require('../models/UserSchema.js');
+var Note = require('../models/NoteSchema.js');
 var DataPoint = require('../models/DatapointSchema.js');
 var auth = require('../authentication/auth.js');
 var jwt = require('jwt-simple');
@@ -60,21 +61,25 @@ var routes = function(app) {
 
    // -- moe's try to add notes --  crashData.note
    //  How do I add a note to a spesific crash?
-   app.post('/api/update_notes', auth.ensureAuthenticated, function(req, res) {
+   app.post('/api/update_note', auth.ensureAuthenticated, function(req, res) {
      User.findById(req.user, function(err, user) {
        if (!user) {
          return res.status(400).send({ message: 'User not found' });
        }
-       var note = {
-         content: req.body.note || user.note,
-         crash_points: //reference to the crashe chosen
-       }
-       user.crash_notes.push(note);
-       user.save(function(err) {
-         res.status(200).end();
-       });
-     });
-   });
+        var newNote = new Note({
+          user_id: user._id,
+          crash_id: "p",
+          date: Date.now(),
+          txt: req.body.txt
+        });
+        newNote.save(function(err) {
+          if (err) {
+            throw err;
+          }
+          return res.status(200).send({message: 'Note saved!'});
+        });
+      });
+    });
 
    app.post('/api/add_data', function(req, res) {
 
@@ -136,6 +141,17 @@ var routes = function(app) {
   app.get('/api/me', auth.ensureAuthenticated, function(req, res) {
     User.findById(req.user, function(err, user) {
       res.send(user);
+    });
+  });
+
+  app.get('/api/note', auth.ensureAuthenticated, function(req, res) {
+    Note.findById(req.user, function(err, notes) {
+      if(err){
+        console.log(err);
+        res.status(500).send();
+      } else {
+      res.send(notes);
+      }
     });
   });
 

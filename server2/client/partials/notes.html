@@ -4,9 +4,9 @@
       <form class="form">
       <div class="form-group">
         <label for="exampleInputName2">Notes</label>
-        <textarea type="text" class="form-control note-input" placeholder="Becouse of a bird I could't see anything" ng-model = "crashData.note"></textarea>
+        <input type="text" class="form-control note-input" placeholder="Becouse of a bird I could't see anything" ng-model="noteData.txt"></input>
       </div>
-      <button type="submit" class="btn btn-primary" ng-click = "updateNotes();">Add note</button>
+      <button type="submit" class="btn btn-primary" ng-click = "updateNote(noteData);">Add note</button>
     </form>
     </div>
   </div>

@@ -1,9 +1,6 @@
 angular.module('MyApp')
-<<<<<<< HEAD
-  .controller('CrashCtrl', function($scope, $http, $auth, $alert, $cookies, $state, Account) {//ta bort Note og siden lastes
-=======
-  .controller('CrashCtrl', function($scope, $http, $auth, $alert, $cookies, $state, Account, $interval) {
->>>>>>> master
+  .controller('CrashCtrl', function($scope, $http, $auth, $alert, $cookies, $state, Account, $interval, Note) {
+
 
       $scope.map_coordinates = cords;
 
@@ -147,6 +144,17 @@ angular.module('MyApp')
       showAlert('Could not load personal data..')
     })
 
+    $scope.noteData = {};
+
+    Note.getNote()
+    .then(function(response) {
+      console.log(response);
+      $scope.noteData = response.data;
+    })
+    .catch(function(response) {
+      showAlert('Could not load note data..')
+    })
+
     this.tab = 1
     if ($cookies.get('initTab') != null){
       this.tab = parseInt($cookies.get('initTab'));
@@ -169,18 +177,23 @@ angular.module('MyApp')
    };
 
    // How to add a note to a spesific crash
-   $scope.updateNotes = function() {
+   $scope.updateNote = function(noteData) {
+     //var noteData = $scope.noteData.note;
+     console.log($scope.noteData.txt);
+     console.log($scope.txt);
+     console.log(noteData.txt)
      var noteData = {
        //reference to user
        //user_id:
        //date: Date.now()
-       text: $scope.crashData.note
+       txt: noteData.txt
 
        // + relation to crash
        // Hwo made the note
      };
+
      console.log(noteData);
-     Account.updateNote(noteData)
+     Note.updateNote(noteData)
      .then(function(response) {
        showAlert('Note has been added', 4);
      }) .catch(function(response) {
