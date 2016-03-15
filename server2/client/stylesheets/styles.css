@@ -12,15 +12,18 @@ a {
   color: #000;
 }
 
+.angular-google-map-container { height: 400px;}
+
 @media (min-width: 768px) {
+  .angular-google-map-container { height: 400px;width: 95%;}
   .owner-input {
-    width: 95%;
+    width: 97%;
   }
   .note-input {
     width: 95%;
   }
-  #map {
-    width: 97%;
+  .nvd-map {
+    width: 50%;
   }
 }
 
