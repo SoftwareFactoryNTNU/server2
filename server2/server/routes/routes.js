@@ -154,7 +154,7 @@ var routes = function(app) {
     });
   });
 
-<<<<<<< HEAD
+
   app.get('/api/note', auth.ensureAuthenticated, function(req, res) {
     Note.findById(req.user, function(err, notes) {
       if(err){
@@ -181,8 +181,7 @@ var routes = function(app) {
     })
   });
 
-=======
->>>>>>> master
+
   /*
    |--------------------------------------------------------------------------
    | PUT /api/me
