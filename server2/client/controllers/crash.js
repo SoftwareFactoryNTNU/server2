@@ -7,21 +7,18 @@ angular.module('MyApp')
       $scope.map = {
             center: {latitude: $scope.map_coordinates[0][0],longitude: $scope.map_coordinates[0][1]},
             zoom: 11,
-            marker: {latitude: $scope.map_coordinates[0][0],longitude: $scope.map_coordinates[0][1]}
+            markers: [{
+              id: '123',
+              latitude: $scope.map_coordinates[0][0],
+              longitude: $scope.map_coordinates[0][1]
+            }]
         };
 
-    $scope.move_marker = function() {
-      console.log('move_marker');
-    }
     $scope.k = 1;
     $interval(function() {
       if ($scope.k < $scope.map_coordinates.length) {
-        var newPoint = {
-          latitude: $scope.map_coordinates[$scope.k][0],
-          longitude: $scope.map_coordinates[$scope.k][1]
-        };
-        console.log(newPoint);
-        $scope.map.marker = newPoint;
+        $scope.map.markers[0].latitude = $scope.map_coordinates[$scope.k][0];
+        $scope.map.markers[0].longitude = $scope.map_coordinates[$scope.k][1];
         $scope.k += 1;
       }
     }, 5000);
@@ -212,7 +209,7 @@ angular.module('MyApp')
        phone_number: $scope.personalData.phone_number,
        email: $scope.personalData.email
      };
-     console.log(data);
+
      Account.updateOwner(data)
      .then(function(response) {
        showAlert('Personal information updated!', 4);
@@ -221,15 +218,6 @@ angular.module('MyApp')
        showAlert('Something went wrong! Please try again.', 4);
      })
    };
-
-   $scope.reloadPage = function(){window.location.reload();}
-
-   $scope.reloadRoute = function() {
-     console.log("tried to reload");
-     // $state.reload();
-     $cookies.put('initTab', '3');
-     $scope.reload();
-   }
 
    $scope.change_state = function(state) {
      var current = 'crash.' + state;
