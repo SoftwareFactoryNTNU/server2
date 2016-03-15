@@ -4,13 +4,13 @@
     <div class="panel-body">
       <div class="row">
         <uib-tabset>
-          <uib-tab heading="Owner" ng-click = "change_state('owner')">
+          <uib-tab heading="Owner" active="isSet(1)" ng-click = "setTab(1);change_state('owner');">
               <div ui-view></div>  <!-- ex: <div ui-view="tab1"></div> -->
           </uib-tab>
-          <uib-tab heading="Notes" ng-click = "change_state('notes')">
+          <uib-tab heading="Notes"  active="isSet(2)" ng-click = "setTab(2);change_state('notes');">
               <div ui-view></div>  <!-- ex: <div ui-view="tab1"></div> -->
           </uib-tab>
-          <uib-tab heading="Overview" ng-click = "change_state('overview')">
+          <uib-tab heading="Overview"  active="isSet(3)" ng-click = "setTab(3);change_state('overview');">
               <div ui-view></div>  <!-- ex: <div ui-view="tab1"></div> -->
           </uib-tab>
       </uib-tabset>

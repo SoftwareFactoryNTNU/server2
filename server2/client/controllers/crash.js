@@ -1,5 +1,5 @@
 angular.module('MyApp')
-  .controller('CrashCtrl', function($scope, $http, $auth, $alert, $cookies, $state, Account) {
+  .controller('CrashCtrl', function($scope, $http, $auth, $alert, $cookies, $state, Account) {//ta bort Note og siden lastes
 
     $scope.personalData = {};
 
@@ -17,24 +17,35 @@ angular.module('MyApp')
       this.tab = parseInt($cookies.get('initTab'));
     }
 
-    this.setTab = function(newValue){
-      $cookies.put('initTab', newValue.toString());
+    $scope.setTab = function(newValue){
+     $cookies.put('initTab', newValue.toString());
      this.tab = newValue;
+     console.log(newValue)
     };
 
-   this.isSet = function(tabName){
-     return this.tab === tabName;
+   $scope.isSet = function(tabName){
+     if (this.tab === tabName){
+       return true;
+     }
+     else{
+        return false;
+     }
+
    };
 
    // How to add a note to a spesific crash
    $scope.updateNotes = function() {
-     var data = {
-       note: $scope.crashData.note
+     var noteData = {
+       //reference to user
+       //user_id:
+       //date: Date.now()
+       text: $scope.crashData.note
+
        // + relation to crash
        // Hwo made the note
      };
-     console.log(data);
-     Account.updateNotes(data)
+     console.log(noteData);
+     Account.updateNote(noteData)
      .then(function(response) {
        showAlert('Note has been added', 4);
      }) .catch(function(response) {
