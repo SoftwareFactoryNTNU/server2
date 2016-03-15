@@ -12,6 +12,9 @@ angular.module('MyApp')
       },
       updateOwner: function(data) {
         return $http.post('/api/update_owner', data)
+      },
+      getDatapoints: function(data) {
+        return $http.post('/api/get_data_from_crash', data)
       }
     };
   });

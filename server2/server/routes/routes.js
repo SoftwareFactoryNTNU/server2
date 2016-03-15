@@ -25,13 +25,16 @@ var routes = function(app) {
      res.render('index.html', data);
    });
 
-   app.get('/api/get_data_from_crash', auth.ensureAuthenticated, function(req, res) {
+   app.post('/api/get_data_from_crash', auth.ensureAuthenticated, function(req, res) {
      User.findById(req.user, function(err, user) {
        if (err) {
          throw err;
        }
+       if (!user) {
+         return res.status(406).send({ data: datapoints, status: 1300 });
+       }
 
-       Datapoint.find({owner_id: req.user}, function(err, datapoints) {
+       Datapoint.find({ owner_id: req.body.owner_id }, function(err, datapoints) {
          if (err) {
            throw err;
          }
@@ -59,8 +62,11 @@ var routes = function(app) {
    });
 
    app.post('/api/add_data', function(req, res) {
-
+     console.log(req.body);
      User.findOne({ pi_id: req.body.pi_id }, function(err, user) {
+       if (err) {
+         throw err;
+       }
        if (!user) {
          return res.status(400).send({ message: 'PI not found' });
        }
@@ -75,6 +81,7 @@ var routes = function(app) {
          brake_pedal_status: req.body.breakingPedal
        });
        newPoint.save(function(err) {
+         console.log(err);
          if (err) {
            throw err;
          }
@@ -86,6 +93,9 @@ var routes = function(app) {
    app.post('/api/add_bulk_data', function(req, res) {
 
      User.findOne({ pi_id: req.body.lines[0].pi_id }, function(err, user) {
+       if (err) {
+         throw err;
+       }
        if (!user) {
          return res.status(400).send({ message: 'PI not found' });
        }
@@ -119,21 +129,6 @@ var routes = function(app) {
     User.findById(req.user, function(err, user) {
       res.send(user);
     });
-  });
-
-  app.post('/api/create_user', function(req, res) {
-    var newUser = new User({
-      email: req.body.email,
-      password: req.body.password,
-      pi_id: "123"
-    });
-
-    newUser.save(function(err) {
-      if (err) {
-        throw err;
-      }
-      res.send('user added');
-    })
   });
 
   /*

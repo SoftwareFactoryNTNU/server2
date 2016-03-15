@@ -29,6 +29,21 @@ var loginRoutes = function(app) {
     });
   });
 
+  app.post('/api/create_user', function(req, res) {
+    var newUser = new User({
+      email: req.body.email,
+      password: req.body.password,
+      pi_id: "123"
+    });
+
+    newUser.save(function(err) {
+      if (err) {
+        throw err;
+      }
+      res.send('user added');
+    })
+  });
+
   /*
    |--------------------------------------------------------------------------
    | Create Email and Password Account
