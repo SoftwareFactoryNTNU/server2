@@ -2,6 +2,11 @@
   <div class="row" style = "margin-top:30px;">
     <div class="col-sm-12">
 
+
+
+
+
+
       <ul>
         <h4>Notes</h4>
         <li ng-repeat="note in notes_for">
@@ -9,7 +14,7 @@
             <strong>{{note._id}}</strong><br>
             {{note.txt}}
             <cite class="clearfix">—{{note.user_id}}</cite>
-            <button ng-click="deleteItem(note)">Delete</button>
+            <button ng-click="showConfirm($event, note)" class="btn btn-danger btn-sm" >Delete</button>
           </blockquote>
         </li>
       </ul>

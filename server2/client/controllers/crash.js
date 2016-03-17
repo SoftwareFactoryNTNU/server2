@@ -1,5 +1,24 @@
 angular.module('MyApp')
-  .controller('CrashCtrl', function($scope, $http, $auth, $alert, $cookies, $state, Account, $interval, Note, $timeout, $uibModal, $window ) {
+  .controller('CrashCtrl', function($scope, $http, $auth, $alert, $cookies, $state, Account, $interval, Note, $timeout, $mdDialog, $mdMedia , $window) {
+
+    $scope.showConfirm = function(ev, item) {
+      // Appending dialog to document.body to cover sidenav in docs app
+      var confirm = $mdDialog.confirm()
+            .title('Would you like to delete this note?')
+            .textContent('Remember when it is removed it is never comming back.')
+            .ariaLabel('Still sure?')
+            .targetEvent(ev)
+            .ok('Please do it!')
+            .cancel('No no never');
+      $mdDialog.show(confirm).then(function() {
+        console.log("yes remove the message");
+        $scope.notes_for.splice($scope.notes_for.indexOf(item), 1);
+        $scope.status = 'You decided to get rid of your debt.';
+      }, function() {
+        $scope.status = 'You decided to keep your debt.';
+      });
+    };
+
     console.log("test");
 
     $scope.notes_for = [];
@@ -46,14 +65,6 @@ angular.module('MyApp')
        })
      };
 
-     $scope.deleteItem = function(item) {
-
-       var deleteNote = $window.confirm('Are you sure You want to delete this note?');
-       //dialogs.error('Error','An unknown error occurred preventing the completion of the requested action.');
-        if (deleteNote) {
-          $scope.notes_for.splice($scope.notes_for.indexOf(item), 1);
-        }
-      }
 
       $scope.map_coordinates = cords;
 
