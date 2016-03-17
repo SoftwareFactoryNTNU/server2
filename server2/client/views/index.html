@@ -13,8 +13,8 @@
   <link href="/stylesheets/styles.css" rel="stylesheet">
   <link href="/bower_components/angular-bootstrap/ui-bootstrap-csp.css" rel="stylesheet">
   <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.css">
-
 </head>
+
 <body>
   <div ng-controller="NavbarCtrl" class="navbar navbar-default navbar-static-top">
     <div class="navbar-header">
@@ -39,15 +39,10 @@
 <!-- Load view -->
 <div ui-view class="fadeZoom"></div>
 
-      <!-- Load data from server -->
-      <script  type="text/javascript" charset="UTF-8">
-      var cords = <%- JSON.stringify(lat_long) %>
-      var speedArray = <%- JSON.stringify(speed) %>
-      </script>
-
       <!-- Custom javascript for marker animation-->
       <script src="/vendor/google-maps-anim.js"></script>
 
+      <script src="/socket.io/socket.io.js"></script>
       <!-- Google maps-->
        <script src='//maps.googleapis.com/maps/api/js?sensor=false'></script>
        <!-- Angular JS -->
@@ -65,6 +60,7 @@
        <script src="/bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
        <script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
        <script src='/bower_components/lodash/dist/lodash.min.js'></script>
+       <script src='/bower_components/angular-socket-io/socket.min.js'></script>
        <script src='/bower_components/angular-simple-logger/dist/angular-simple-logger.min.js'></script>
        <script src='/bower_components/angular-google-maps/dist/angular-google-maps.min.js'></script>
 

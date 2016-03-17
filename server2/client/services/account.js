@@ -17,4 +17,8 @@ angular.module('MyApp')
         return $http.post('/api/get_data_from_crash', data)
       }
     };
-  });
+  })
+
+  .factory('mySocket', function (socketFactory) {
+  return socketFactory();
+});

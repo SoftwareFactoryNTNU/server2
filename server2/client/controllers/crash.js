@@ -1,26 +1,46 @@
 angular.module('MyApp')
-  .controller('CrashCtrl', function($scope, $http, $auth, $alert, $cookies, $state, Account, $interval) {
+  .controller('CrashCtrl', function($scope, $http, $auth, $alert, $cookies, $state, Account, $interval, mySocket) {
 
-      $scope.map_coordinates = cords;
+    console.log('Running');
+    mySocket.emit('connection', function() {
+      console.log('LOG ERROR');
+    });
+    $scope.got_data = false;
+    mySocket.on("got_data", function(data) {
+      $scope.got_data = true;
+    })
+
+
+    $scope.map_coordinates = [];
+      $http.post('/api/get_data_from_crash').success(function(response) {
+        console.log(response.data);
+        if (response.data.length > 0) {
+              $scope.map_coordinates = response.data;
+        }
+      }).catch(function(err) {
+        console.log(err);
+      });
 
       $scope.map = {
-            center: {latitude: $scope.map_coordinates[0][0],longitude: $scope.map_coordinates[0][1]},
+            center : { latitude: 40.9, longitude: -73.964027 },
             zoom: 11,
-            markers: [{
+            markers : [{
               id: '123',
-              latitude: $scope.map_coordinates[0][0],
-              longitude: $scope.map_coordinates[0][1]
+              latitude: 40.9,
+              longitude: -73.964027
             }]
         };
 
-    $scope.k = 1;
+
+
+    $scope.k = 0;
     $interval(function() {
       if ($scope.k < $scope.map_coordinates.length) {
-        $scope.map.markers[0].latitude = $scope.map_coordinates[$scope.k][0];
-        $scope.map.markers[0].longitude = $scope.map_coordinates[$scope.k][1];
+        $scope.map.markers[0].latitude = $scope.map_coordinates[$scope.k].latitude;
+        $scope.map.markers[0].longitude = $scope.map_coordinates[$scope.k].longditude;
         $scope.k += 1;
       }
-    }, 5000);
+    }, 2000);
 
     $scope.options1 = {
             chart: {
@@ -140,6 +160,19 @@ angular.module('MyApp')
       showAlert('Could not load personal data..')
     })
 
+    $scope.load_new_data = function() {
+      console.log('loading new data');
+      $http.post('/api/get_data_from_crash').success(function(response) {
+        $scope.got_data = false;
+        if (response.data.length > 0) {
+            $scope.map_coordinates = response.data;
+        }
+      }).catch(function(err) {
+        console.log(err);
+      });
+      $scope.got_data = false;
+    }
+
     this.tab = 1
     if ($cookies.get('initTab') != null){
       this.tab = parseInt($cookies.get('initTab'));
@@ -182,11 +215,10 @@ angular.module('MyApp')
    // -- Depricated --
    $scope.restartAnimation = function() {
      $scope.k = 0;
-     var newPoint = {
-       latitude: $scope.map_coordinates[$scope.k][0],
-       longitude: $scope.map_coordinates[$scope.k][1]
-     };
-     $scope.map.marker = newPoint;
+     $scope.map.markers[0].latitude = $scope.map_coordinates[0].latitude;
+     $scope.map.markers[0].longitude = $scope.map_coordinates[0].longditude;
+     console.log($scope.map_coordinates[0].latitude);
+     console.log($scope.map_coordinates[0].longditude);
    }
 
    function showAlert(content, duration) {
@@ -230,9 +262,9 @@ angular.module('MyApp')
 };
 
 //var speedArray = <%- JSON.stringify(speed) %>
-$scope.data = sinAndCos();
+//$scope.data = sinAndCos();
 
-/*Random Data Generator */
+/*Random Data Generator
 function sinAndCos() {
     var speedChart = [];
     //Data is represented as an array of {x,y} pairs.
@@ -249,5 +281,6 @@ function sinAndCos() {
         }
     ];
 };
+*/
 
  });

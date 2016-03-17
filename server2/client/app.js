@@ -1,4 +1,4 @@
-angular.module('MyApp', ['ngResource', 'ngMessages', 'ui.router', 'mgcrea.ngStrap', 'satellizer', 'nvd3', 'ngCookies', 'ui.bootstrap', 'uiGmapgoogle-maps'])
+angular.module('MyApp', ['ngResource', 'ngMessages', 'ui.router', 'mgcrea.ngStrap', 'satellizer', 'nvd3', 'ngCookies', 'ui.bootstrap', 'uiGmapgoogle-maps','btford.socket-io'])
   .config(function($stateProvider, $urlRouterProvider, $authProvider) {
 
     $stateProvider

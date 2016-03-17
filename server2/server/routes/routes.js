@@ -8,7 +8,7 @@ var qs = require('querystring');
 var async = require('async');
 var config = require('../config.js');
 
-var routes = function(app) {
+var routes = function(app, io) {
   /*
    |--------------------------------------------------------------------------
    | GET /api/me
@@ -16,13 +16,7 @@ var routes = function(app) {
    */
 
    app.get('/', function(req, res) {
-     console.log('got route');
-
-     var data = {
-       lat_long: [[63.568138,10.295417],[63.314919,10.752056],[63.108749,11.5345],[63.086418,11.648694],[63.827442,10.371333],[62.961193,10.090278],[62.743168,9.291194],[63.122833,10.591667],[63.123749,9.443389],[63.210278,10.70875],[63.016499,10.958944],[63.163502,10.526361],[62.112194,11.48656],[63.019974,9.197861],[63.328529,11.027583],[63.390305,11.418528],[63.141998,11.722361],[63.147141,9.11575],[62.876141,9.661972],[62.821918,10.608694],[62.7085,9.800861],[62.412193,11.18656],[62.550045646,12.050345356]],
-       speed: [22, 48, 49, 50, 50, 51, 48, 50, 50, 48, 51, 52, 54, 55, 55, 55, 56, 56, 55, 54, 57, 55, 54, 55, 54, 56, 56, 56, 56, 54, 56, 56, 54, 56, 55, 54, 56, 56, 54]
-     };
-     res.render('index.html', data);
+     res.render('index.html');
    });
 
    app.post('/api/get_data_from_crash', auth.ensureAuthenticated, function(req, res) {
@@ -31,16 +25,17 @@ var routes = function(app) {
          throw err;
        }
        if (!user) {
-         return res.status(406).send({ data: datapoints, status: 1300 });
+         return res.status(406).send('user not found');
        }
 
-       Datapoint.find({ owner_id: req.body.owner_id }, function(err, datapoints) {
+       DataPoint.find({ owner_id: req.user }, function(err, datapoints) {
          if (err) {
            throw err;
          }
+         console.log(datapoints);
          return res.status(200).send({data: datapoints});
-       }).sort({ timestamp: -1 });
-     })
+       }).sort({ timestamp: 1 });
+     });
    });
 
    app.post('/api/update_owner', auth.ensureAuthenticated, function(req, res) {
@@ -60,6 +55,12 @@ var routes = function(app) {
        });
      });
    });
+
+   app.get('/send/:data', function(req, res) {
+     io.emit("send", {hello: "world"});
+     return res.status(200).send('sent');
+   });
+
 
    app.post('/api/add_data', function(req, res) {
      console.log(req.body);
@@ -85,13 +86,14 @@ var routes = function(app) {
          if (err) {
            throw err;
          }
+         io.emit("got_data");
          return res.status(200).send({message: 'Datapoint saved'});
        });
      });
    });
 
    app.post('/api/add_bulk_data', function(req, res) {
-
+     console.log(req.body);
      User.findOne({ pi_id: req.body.lines[0].pi_id }, function(err, user) {
        if (err) {
          throw err;
@@ -120,6 +122,7 @@ var routes = function(app) {
          if (err) {
            throw err;
          }
+         io.emit("got_data");
          return res.status(200).end();
        });
      });
