@@ -1,7 +1,7 @@
 module.exports = {
   TOKEN_SECRET: 'MY_SECRET',
   db: {
-    url: 'mongodb://localhost:6667/tester'
+    url: 'mongodb://localhost/testname'
   },
   facebook: {
     id: '846493822102669',

@@ -1,5 +1,5 @@
 angular.module('MyApp')
-  .controller('CrashCtrl', function($scope, $http, $auth, $alert, $cookies, $state, Account, $interval, Note, $timeout ) {
+  .controller('CrashCtrl', function($scope, $http, $auth, $alert, $cookies, $state, Account, $interval, Note, $timeout, $uibModal, $window ) {
     console.log("test");
 
     $scope.notes_for = [];
@@ -49,7 +49,7 @@ angular.module('MyApp')
      $scope.deleteItem = function(item) {
 
        var deleteNote = $window.confirm('Are you sure You want to delete this note?');
-       dialogs.error('Error','An unknown error occurred preventing the completion of the requested action.');
+       //dialogs.error('Error','An unknown error occurred preventing the completion of the requested action.');
         if (deleteNote) {
           $scope.notes_for.splice($scope.notes_for.indexOf(item), 1);
         }
