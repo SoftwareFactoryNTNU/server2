@@ -1,6 +1,59 @@
 angular.module('MyApp')
-  .controller('CrashCtrl', function($scope, $http, $auth, $alert, $cookies, $state, Account, $interval, Note) {
+  .controller('CrashCtrl', function($scope, $http, $auth, $alert, $cookies, $state, Account, $interval, Note, $timeout ) {
+    console.log("test");
 
+    $scope.notes_for = [];
+    $scope.noteData = {};
+
+
+    Note.getNote()
+     .then(function(response) {
+       //console.log(response);
+       //$scope.noteData = response.data;
+
+       for (var i=0;i<response.data.length;i++){
+           $scope.notes_for.push(response.data[i])
+       }
+       //$scope.$$phase || $scope.$apply();
+       //$scope.$apply();   //$digest already in progress uhhh...
+       $timeout(function() {
+         $scope.$apply();
+       });
+       console.log($scope.notes_for);
+     })
+     .catch(function(response) {
+       showAlert('Could not load note data..')
+     })
+
+     //console.log(crash.notes);
+
+     // How to add a note to a spesific crash
+     $scope.updateNote = function(noteData) {
+       //var noteData = $scope.noteData.note;
+       var noteData = {
+         txt: noteData.txt
+       };
+       console.log(noteData);
+       Note.updateNote(noteData)
+       .then(function(response) {
+         showAlert('Note has been added', 4);
+         $scope.notes_for.push(noteData)
+         $scope.noteData = {};
+         console.log($scope.notes_for);
+       }) .catch(function(response) {
+         console.log(response);
+         showAlert('Something went wrong! Please try again.', 4);
+       })
+     };
+
+     $scope.deleteItem = function(item) {
+
+       var deleteNote = $window.confirm('Are you sure You want to delete this note?');
+       dialogs.error('Error','An unknown error occurred preventing the completion of the requested action.');
+        if (deleteNote) {
+          $scope.notes_for.splice($scope.notes_for.indexOf(item), 1);
+        }
+      }
 
       $scope.map_coordinates = cords;
 
@@ -127,7 +180,7 @@ angular.module('MyApp')
                     },
                     {
                         key: "Seven",
-                        y: .5
+                        y: 5
                     }
                 ];
     $scope.personalData = {};
@@ -141,16 +194,6 @@ angular.module('MyApp')
       showAlert('Could not load personal data..')
     })
 
-    $scope.noteData = {};
-
-    Note.getNote()
-    .then(function(response) {
-      console.log(response);
-      $scope.noteData = response.data;
-    })
-    .catch(function(response) {
-      showAlert('Could not load note data..')
-    })
 
     this.tab = 1
     if ($cookies.get('initTab') != null){
@@ -173,31 +216,7 @@ angular.module('MyApp')
 
    };
 
-   // How to add a note to a spesific crash
-   $scope.updateNote = function(noteData) {
-     //var noteData = $scope.noteData.note;
-     console.log($scope.noteData.txt);
-     console.log($scope.txt);
-     console.log(noteData.txt)
-     var noteData = {
-       //reference to user
-       //user_id:
-       //date: Date.now()
-       txt: noteData.txt
 
-       // + relation to crash
-       // Hwo made the note
-     };
-
-     console.log(noteData);
-     Note.updateNote(noteData)
-     .then(function(response) {
-       showAlert('Note has been added', 4);
-     }) .catch(function(response) {
-       console.log(response);
-       showAlert('Something went wrong! Please try again.', 4);
-     })
-   };
 
    $scope.updateOwner = function() {
      var data = {
@@ -294,5 +313,7 @@ function sinAndCos() {
         }
     ];
 };
+
+
 
  });

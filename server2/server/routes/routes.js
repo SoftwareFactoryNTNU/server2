@@ -62,8 +62,11 @@ var routes = function(app) {
      });
    });
 
-   // -- moe's try to add notes --  crashData.note
-   //  How do I add a note to a spesific crash?
+   //---------------------------------------------------------------------
+   //               **      moe's try to add notes    **
+   // --------------------------------------------------------------------
+   //
+   //  Currently this method adds a note to the crash named 'p'
    app.post('/api/update_note', auth.ensureAuthenticated, function(req, res) {
      User.findById(req.user, function(err, user) {
        if (!user) {
@@ -83,6 +86,34 @@ var routes = function(app) {
         });
       });
     });
+
+
+    app.post('/api/update_note', auth.ensureAuthenticated, function(req, res) {
+      User.findById(req.user, function(err, user) {
+        if (!user) {
+          return res.status(400).send({ message: 'User not found' });
+        }
+         var newNote = new Note({
+           user_id: user._id,
+           crash_id: "p",
+           date: Date.now(),
+           txt: req.body.txt
+         });
+         newNote.save(function(err) {
+           if (err) {
+             throw err;
+           }
+           return res.status(200).send({message: 'Note saved!'});
+         });
+       });
+     });
+
+
+    //---------------------------------------------------------------------
+    //                    END of moe's try to add notes
+    // --------------------------------------------------------------------
+    //
+
 
    app.post('/api/add_data', function(req, res) {
      console.log(req.body);
@@ -156,7 +187,7 @@ var routes = function(app) {
 
 
   app.get('/api/note', auth.ensureAuthenticated, function(req, res) {
-    Note.findById(req.user, function(err, notes) {
+    Note.find({user_id: req.user}, function(err, notes) {
       if(err){
         console.log(err);
         res.status(500).send();
