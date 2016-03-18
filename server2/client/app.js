@@ -60,6 +60,7 @@ angular.module('MyApp', ['ngResource', 'ngMessages', 'ui.router', 'mgcrea.ngStra
       .state('crash.notes', {
         url: '/notes',
         templateUrl: 'partials/notes.html',
+        controller: 'NoteCtrl',
         resolve: {
           authenticated: function($q, $location, $auth) {
             var deferred = $q.defer();
