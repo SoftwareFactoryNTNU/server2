@@ -1,12 +1,6 @@
 <div class="container">
   <div class="row" style = "margin-top:30px;">
     <div class="col-sm-12">
-
-
-
-
-
-
       <ul>
         <h4>Notes</h4>
         <li ng-repeat="note in notes_for">
@@ -14,12 +8,28 @@
             <strong>{{note._id}}</strong><br>
             {{note.txt}}
             <cite class="clearfix">—{{note.user_id}}</cite>
-            <button ng-click="showConfirm($event, note)" class="btn btn-danger btn-sm" >Delete</button>
+             <md-menu>
+              <md-button aria-label="Open note actions" class="md-icon-button" ng-click="openMenu($mdOpenMenu, $event)">
+                <md-icon md-menu-origin="" md-font-set="material-icons"> more_horiz </md-icon>
+              </md-button>
+              <md-menu-content width="4">
+                <md-menu-item>
+                  <md-button ng-click="showConfirm($event, note)">
+                    <md-icon md-font-set="material-icons"> delete_forever </md-icon>
+                    Delete forever
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="editNote($event, note)">
+                    <md-icon md-font-set="material-icons"> edit </md-icon>
+                    Edit
+                  </md-button>
+                </md-menu-item>
+              </md-menu-content>
+            </md-menu>
           </blockquote>
         </li>
       </ul>
-
-
       <form class="form">
       <div class="form-group">
         <label for="exampleInputName2">Notes</label>

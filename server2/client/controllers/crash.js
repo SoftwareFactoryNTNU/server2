@@ -1,6 +1,37 @@
 angular.module('MyApp')
   .controller('CrashCtrl', function($scope, $http, $auth, $alert, $cookies, $state, Account, $interval, Note, $timeout, $mdDialog, $mdMedia , $window) {
 
+    var originatorEv;
+
+    $scope.openMenu = function($mdOpenMenu, ev) {
+      originatorEv = ev;
+      $mdOpenMenu(ev);
+    };
+
+
+    $scope.toggleNotifications = function() {
+      $scope.notificationsEnabled = !this.notificationsEnabled;
+    };
+
+    $scope.editNote = function(ev, item) {
+      // Appending dialog to document.body to cover sidenav in docs app
+      var confirm = $mdDialog.prompt()
+            .title('Recompose your note')
+            .textContent('Edit your note on the accident')
+            .placeholder('no it was realy just a lie')
+            .ariaLabel('note edit')
+            .targetEvent(ev)
+            .ok('Okay!')
+            .cancel('No nothing new');
+      $mdDialog.show(confirm).then(function(result) {
+        //user wanted to change
+        console.log("EDIT!")
+        //$scope.status = 'You decided to name your dog ' + result + '.';
+      }, function() {
+        //$scope.status = 'You didn\'t name your dog.';
+      });
+    };
+
     $scope.showConfirm = function(ev, item) {
       // Appending dialog to document.body to cover sidenav in docs app
       var confirm = $mdDialog.confirm()
@@ -27,7 +58,7 @@ angular.module('MyApp')
 
     Note.getNote()
      .then(function(response) {
-       //console.log(response);
+       console.log(response);
        //$scope.noteData = response.data;
 
        for (var i=0;i<response.data.length;i++){

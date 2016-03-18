@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6
+ * v1.0.6-master-6a9ee5c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -63,13 +63,17 @@ angular
  *
  * <ol>
  * <li>Load the font library. e.g.<br/>
- *    &lt;link href="https://fonts.googleapis.com/icon?family=Material+Icons"
- *    rel="stylesheet"&gt;
+ *    `<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+ *    rel="stylesheet">`
  * </li>
- * <li> Use either (a) font-icon class names or (b) font ligatures to render the font glyph by using its textual name</li>
- * <li> Use &lt;md-icon md-font-icon="classname" /&gt; or <br/>
- *     use &lt;md-icon md-font-set="font library classname or alias"&gt; textual_name &lt;/md-icon&gt; or <br/>
- *     use &lt;md-icon md-font-set="font library classname or alias"&gt; numerical_character_reference &lt;/md-icon&gt;
+ * <li>
+ *   Use either (a) font-icon class names or (b) font ligatures to render the font glyph by using
+ *   its textual name
+ * </li>
+ * <li>
+ *   Use `<md-icon md-font-icon="classname" />` or <br/>
+ *   use `<md-icon md-font-set="font library classname or alias"> textual_name </md-icon>` or <br/>
+ *   use `<md-icon md-font-set="font library classname or alias"> numerical_character_reference </md-icon>`
  * </li>
  * </ol>
  *
@@ -162,7 +166,7 @@ angular
  *  <!-- The class '.material-icons' is auto-added if a style has NOT been specified -->
  *  <md-icon> face </md-icon>
  *  <md-icon md-font-set="material-icons"> face </md-icon>
- *  <md-icon> #xE87C; </md-icon>
+ *  <md-icon> &#xE87C; </md-icon>
  *  <!-- The class '.material-icons' must be manually added if other styles are also specified-->
  *  <md-icon class="material-icons md-light md-48"> face </md-icon>
  * </hljs>
@@ -369,7 +373,7 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
     * @param {string} id Icon name/id used to register the iconset
     * @param {string} url specifies the external location for the data file. Used internally by `$http` to load the
     * data or as part of the lookup in `$templateCache` if pre-loading was configured.
-    * @param {number=} viewBoxSize Sets the width and height of the viewBox of all icons in the set. 
+    * @param {number=} viewBoxSize Sets the width and height of the viewBox of all icons in the set.
     * It is ignored for icons with an existing viewBox. All icons in the icon set should be the same size.
     * Default value is 24.
     *
@@ -399,7 +403,7 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
     *
     * @param {string} url specifies the external location for the data file. Used internally by `$http` to load the
     * data or as part of the lookup in `$templateCache` if pre-loading was configured.
-    * @param {number=} viewBoxSize Sets the width and height of the viewBox of all icons in the set. 
+    * @param {number=} viewBoxSize Sets the width and height of the viewBox of all icons in the set.
     * It is ignored for icons with an existing viewBox. All icons in the icon set should be the same size.
     * Default value is 24.
     *
@@ -512,7 +516,7 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
      config.defaultViewBoxSize = viewBoxSize;
      return this;
    },
-   
+
    /**
     * Register an alias name associated with a font-icon library style ;
     */
@@ -687,8 +691,19 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
     */
    function cacheIcon( id ) {
 
-     return function updateCache( icon ) {
-       iconCache[id] = isIcon(icon) ? icon : new Icon(icon, config[id]);
+     return function updateCache( _icon ) {
+       var icon = isIcon(_icon) ? _icon : new Icon(_icon, config[id]);
+
+       //clear id attributes to prevent aria issues
+       var elem = icon.element;
+       elem.removeAttribute('id');
+
+       angular.forEach(elem.querySelectorAll('[id]'), function(item) {
+         item.removeAttribute('id');
+       });
+
+       iconCache[id] = icon;
+
 
        return iconCache[id].clone();
      };
@@ -788,7 +803,8 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
            'height': '100%',
            'width' : '100%',
            'preserveAspectRatio': 'xMidYMid meet',
-           'viewBox' : this.element.getAttribute('viewBox') || ('0 0 ' + viewBoxSize + ' ' + viewBoxSize)
+           'viewBox' : this.element.getAttribute('viewBox') || ('0 0 ' + viewBoxSize + ' ' + viewBoxSize),
+           'focusable': false // Disable IE11s default behavior to make SVGs focusable
          }, function(val, attr) {
            this.element.setAttribute(attr, val);
          }, this);
