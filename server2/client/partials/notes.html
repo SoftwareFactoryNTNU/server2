@@ -7,7 +7,7 @@
           <blockquote>
             <strong>{{note._id}}</strong><br>
             {{note.txt}}
-            <cite class="clearfix">—{{note.user_id}}</cite>
+            <cite class="clearfix">—{{getPerson(note.user_id)}}</cite> <!-- —{{note.user_id}}</cite>-->
              <md-menu>
               <md-button aria-label="Open note actions" class="md-icon-button" ng-click="openMenu($mdOpenMenu, $event)">
                 <md-icon md-menu-origin="" md-font-set="material-icons"> more_horiz </md-icon>

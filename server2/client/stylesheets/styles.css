@@ -1,6 +1,7 @@
 body {
   font-family: 'Open Sans', sans-serif;
-  background: #e4e7ec;
+  height: 100%;
+  background: #FAFAFA;/*rgba(236,239,241,1);*/
 }
 
 h1, h2, h3, h4, h5, h6 {

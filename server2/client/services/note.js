@@ -6,6 +6,9 @@ angular.module('MyApp')
       },
       updateNote: function(noteData) {
         return $http.post('/api/update_note', noteData)
+      },
+      deleteNote: function(noteData) {
+        return $http.post('/api/delete_note', noteData)
       }
     };
   });

@@ -43,6 +43,7 @@ angular.module('MyApp')
             .cancel('No no never');
       $mdDialog.show(confirm).then(function() {
         console.log("yes remove the message");
+        $scope.deleteNote(item);
         $scope.notes_for.splice($scope.notes_for.indexOf(item), 1);
         $scope.status = 'You decided to get rid of your debt.';
       }, function() {
@@ -55,25 +56,51 @@ angular.module('MyApp')
     $scope.notes_for = [];
     $scope.noteData = {};
 
+    $scope.refreshNotes =function(){
+      Note.getNote()
+       .then(function(response) {
+         console.log(response);
+         //$scope.noteData = response.data;
 
-    Note.getNote()
-     .then(function(response) {
-       console.log(response);
-       //$scope.noteData = response.data;
+         for (var i=0;i<response.data.length;i++){
+             $scope.notes_for.push(response.data[i])
+         }
+         //$scope.$$phase || $scope.$apply();
+         //$scope.$apply();   //$digest already in progress uhhh...
+         $timeout(function() {
+           $scope.$apply();
+         });
+         console.log($scope.notes_for);
+       })
+       .catch(function(response) {
+         showAlert('Could not load note data..')
+       })
+     }
+     $scope.refreshNotes();
 
-       for (var i=0;i<response.data.length;i++){
-           $scope.notes_for.push(response.data[i])
-       }
-       //$scope.$$phase || $scope.$apply();
-       //$scope.$apply();   //$digest already in progress uhhh...
-       $timeout(function() {
-         $scope.$apply();
-       });
-       console.log($scope.notes_for);
-     })
-     .catch(function(response) {
-       showAlert('Could not load note data..')
-     })
+    $scope.deleteNote = function(noteData) {
+      //var noteData = $scope.noteData.note;
+
+      console.log(noteData);
+      Note.deleteNote(noteData)
+      .then(function(response) {
+        showAlert('Note has been deleted', 4);
+        $timeout(function() {
+          $scope.$apply();
+        });
+      }) .catch(function(response) {
+        console.log(response);
+        showAlert('Something went wrong! Please try again.', 4);
+      });
+    };
+
+    $scope.getPerson = function(pnumber) {
+      if (pnumber==$scope.personalData._id){
+        return $scope.personalData.email
+      } else {
+        console.log("error")
+      }
+    }
 
      //console.log(crash.notes);
 
@@ -87,8 +114,9 @@ angular.module('MyApp')
        Note.updateNote(noteData)
        .then(function(response) {
          showAlert('Note has been added', 4);
-         $scope.notes_for.push(noteData)
+
          $scope.noteData = {};
+         $scope.refreshNotes();
          console.log($scope.notes_for);
        }) .catch(function(response) {
          console.log(response);

@@ -108,6 +108,17 @@ var routes = function(app) {
        });
      });
 
+     app.post('/api/delete_note', auth.ensureAuthenticated, function(req, res) {
+       Note.findByIdAndRemove(req.body._id , function(err) {
+        if(err){
+          return res.status(400).send({message: 'Could not delete note'});
+        } else {
+          // it worked!
+          return res.status(200).send({message: 'Note deleted'});
+        };
+      });
+    });
+
 
     //---------------------------------------------------------------------
     //                    END of moe's try to add notes
