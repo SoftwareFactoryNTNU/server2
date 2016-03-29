@@ -1,5 +1,5 @@
 angular.module('MyApp', ['ngResource', 'ngMessages', 'ui.router', 'mgcrea.ngStrap', 'satellizer', 'nvd3', 'ngCookies', 'ui.bootstrap', 'uiGmapgoogle-maps', 'ngMaterial'])
-  .config(function($stateProvider, $urlRouterProvider, $authProvider, $mdThemingProvider) {
+  .config(function($stateProvider, $urlRouterProvider, $authProvider, $mdThemingProvider, uiGmapGoogleMapApiProvider) {
     $mdThemingProvider.definePalette('amazingPaletteName', {
     '50': 'ffebee',
     '100': 'ffcdd2',
@@ -23,6 +23,11 @@ angular.module('MyApp', ['ngResource', 'ngMessages', 'ui.router', 'mgcrea.ngStra
     'backgroundPalette': 'e4e7ec'
   });
 
+  uiGmapGoogleMapApiProvider.configure({
+      key: 'AIzaSyCwtgP3ap8vcxFVkkHwh5bhlM85Ot2YYYQ',
+      v: '3.20', //defaults to latest 3.X anyhow
+      libraries: 'geometry,visualization'
+  });
 
     $mdThemingProvider.theme('default')
     .primaryPalette('amazingPaletteName')

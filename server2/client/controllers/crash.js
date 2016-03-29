@@ -1,6 +1,8 @@
 angular.module('MyApp')
-  .controller('CrashCtrl', function($scope, $http, $auth, $alert, $cookies, $state, Account, $interval, Note, $timeout, $mdDialog, $mdMedia , $window) {
+  .controller('CrashCtrl', function($scope, $http, $auth, $alert, $cookies, $state, Account, $interval, Note, $timeout, $mdDialog, $mdMedia , $window, uiGmapGoogleMapApi) {
 
+    //      NOTES
+    // ----------------------------------------
     var originatorEv;
 
     $scope.openMenu = function($mdOpenMenu, ev) {
@@ -61,7 +63,8 @@ angular.module('MyApp')
        .then(function(response) {
          console.log(response);
          //$scope.noteData = response.data;
-
+         $scope.notes_for = [];
+         $scope.noteData = {};
          for (var i=0;i<response.data.length;i++){
              $scope.notes_for.push(response.data[i])
          }
@@ -102,6 +105,11 @@ angular.module('MyApp')
       }
     }
 
+    $scope.getTimeMongo = function(_id){
+      timestamp = _id.toString().substring(0,8);
+      return (new Date( parseInt( timestamp, 16 ) * 1000 )).toDateString();
+    }
+
      //console.log(crash.notes);
 
      // How to add a note to a spesific crash
@@ -125,6 +133,13 @@ angular.module('MyApp')
      };
 
 
+     //      END - NOTES
+     // ----------------------------------------
+     // ----------------------------------------
+
+
+
+
       $scope.map_coordinates = cords;
 
       $scope.map = {
@@ -137,7 +152,7 @@ angular.module('MyApp')
             }]
         };
 
-    $scope.k = 1;
+    /*$scope.k = 1;
     $interval(function() {
       if ($scope.k < $scope.map_coordinates.length) {
         $scope.map.markers[0].latitude = $scope.map_coordinates[$scope.k][0];
@@ -145,6 +160,148 @@ angular.module('MyApp')
         $scope.k += 1;
       }
     }, 5000);
+    */
+    //        MAP
+    // *******************
+
+      uiGmapGoogleMapApi.then(function(maps) {
+
+        $scope.updateInfo = function(){
+          //console.log("!");
+        }
+
+
+        $scope.animateCar = function(marker, cords, km_h){
+          var target = 1;
+          var km_h = speedArray[target];
+          var delay = 100;
+          //cords.push([startPos[0], startPos[1]]);
+          console.log(cords);
+          $scope.goTo = function(){
+            //var lat = marker.position.lat();
+            //var lng = marker.position.lng();
+            var lat = $scope.map.markers[0].latitude;
+            var lng = $scope.map.markers[0].longitude;
+            console.log(lat);
+            console.log(lng);
+
+
+
+            var step = (km_h * 1000 * delay) / 3600000
+            $scope.updateInfo();
+            var dest = new google.maps.LatLng(cords[target][0], cords[target][1]);
+            var start = new google.maps.LatLng(cords[target-1][0], cords[target-1][1]);
+            var distance = google.maps.geometry.spherical.computeDistanceBetween(
+              dest, start); //in meters
+              var numStep = distance / step;
+              var i = 0;
+              var deltaLat = (cords[target][0] - lat) / numStep;
+              var deltaLng = (cords[target][1] - lng) / numStep;
+              $scope.moveMarker = function(){
+                lat += deltaLat;
+                lng += deltaLng;
+                i += step;
+                if (i<distance){
+                  //marker.setPosition(new google.maps.LatLng(lat, lng));
+                  $scope.map.markers[0].latitude = lat;
+                  $scope.map.markers[0].longitude = lng;
+
+                  first = $interval($scope.moveMarker, delay, 1); //setTimeout(moveMarker, delay);
+                }
+                else{
+                  //$scope.map.markers[0].setPosition(dest);
+                  $scope.map.markers[0].latitude = cords[target][0];
+                  $scope.map.markers[0].longitude = cords[target][1];
+                  target += 1;
+                  km_h = speedArray[target];
+                  //updateInfo();
+                  if (target == cords.length){
+                    target = 0;
+                    km_h = speedArray[0];
+                    $scope.updateInfo();
+                  }
+                  secound = $interval($scope.goTo, delay , 1);//setTimeout(goTo, delay);
+                }
+              }
+              $scope.moveMarker();
+          }
+          $scope.goTo();
+        }
+
+        $scope.animateCar($scope.map.markers[0], cords, 50)
+
+
+        var start = new google.maps.LatLng(cords[0][0], cords[0][1]);
+        var dest = new google.maps.LatLng(cords[1][0], cords[1][1]);
+        var distance = google.maps.geometry.spherical.computeDistanceBetween(
+          start, dest); //in meters
+          console.log(distance);
+   });
+
+
+
+
+/*
+    $scope.updateInfo = function(){
+      console.log.("!")
+    }
+
+    $scope.animateCar = function(marker, cords, km_h){
+      var target = 0;
+      var km_h = speedArray[target];
+      var delay = 100;
+      //cords.push([startPos[0], startPos[1]]);
+      console.log(cords);
+      $scope.goTo = function(){
+        var lat = marker.position.lat();
+        var lng = marker.position.lng();
+        var step = (km_h * 1000 * delay) / 3600000
+        $scope.updateInfo();
+        var dest = new google.maps.LatLng(cords[target][0], cords[target][1]);
+        var distance = google.maps.geometry.spherical.computeDistanceBetween(
+          dest, marker.position); //in meters
+          var numStep = distance / step;
+           i = 0;
+          var deltaLat = (cords[target][0] - lat) / numStep;
+          var deltaLng = (cords[target][1] - lng) / numStep;
+          function moveMarker(){
+            lat += deltaLat;
+            lng += deltaLng;
+            i += step;
+            if (i<distance){
+              marker.setPosition(new google.maps.LatLng(lat, lng));
+              first = setTimeout(moveMarker, delay);
+            }
+            else{
+              marker.setPosition(dest);
+              target+=1;
+              km_h = speedArray[target];
+              //updateInfo();
+              if (target == cords.length){
+                target = 0;
+                km_h = speedArray[0];
+                updateInfo();
+              }
+              secound = setTimeout(goTo, delay);
+            }
+          }
+          moveMarker();
+      }
+      goTo();
+    }
+
+
+
+
+
+*/
+
+
+//      END - MAP
+// *********************
+
+
+
 
     $scope.options1 = {
             chart: {

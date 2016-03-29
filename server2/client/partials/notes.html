@@ -5,7 +5,7 @@
         <h4>Notes</h4>
         <li ng-repeat="note in notes_for">
           <blockquote>
-            <strong>{{note._id}}</strong><br>
+            <strong>{{getTimeMongo(note._id)}}</strong><br>
             {{note.txt}}
             <cite class="clearfix">—{{getPerson(note.user_id)}}</cite> <!-- —{{note.user_id}}</cite>-->
              <md-menu>
