@@ -1,63 +1,6 @@
 angular.module('MyApp')
   .controller('CrashCtrl', function($scope, $http, $auth, $alert, $cookies, $state, Account, $interval, Note, $timeout, $mdDialog, $mdMedia , $window, uiGmapGoogleMapApi) {
-    $scope.polylines = [
-            {
-                id: 1,
-                path: [
-                    {
-                        latitude: 45,
-                        longitude: -74
-                    },
-                    {
-                        latitude: 30,
-                        longitude: -89
-                    },
-                    {
-                        latitude: 37,
-                        longitude: -122
-                    },
-                    {
-                        latitude: 60,
-                        longitude: -95
-                    }
-                ],
-                stroke: {
-                    color: '#6060FB',
-                    weight: 3
-                },
 
-                visible: true,
-
-            },
-            {
-                id: 2,
-                path: [
-                    {
-                        latitude: 47,
-                        longitude: -74
-                    },
-                    {
-                        latitude: 32,
-                        longitude: -89
-                    },
-                    {
-                        latitude: 39,
-                        longitude: -122
-                    },
-                    {
-                        latitude: 62,
-                        longitude: -95
-                    }
-                ],
-                stroke: {
-                    color: '#6060FB',
-                    weight: 3
-                },
-
-
-
-            }
-        ];
 
 
 
@@ -209,6 +152,9 @@ angular.module('MyApp')
             center: {latitude: $scope.map_coordinates[0][0],longitude: $scope.map_coordinates[0][1]},
             zoom: 11,
             draggable: true,
+            disableDoubleClickZoom: true,
+            scrollwheel: false,
+            panControl: true,
             markers: [{
               id: '123',
               latitude: $scope.map_coordinates[0][0],
@@ -216,6 +162,10 @@ angular.module('MyApp')
             }]
         };
 
+        $interval( function(){
+          //$scope.map.panTo(new google.maps.LatLng($scope.map.markers[0].latitude, $scope.map.markers[0].longitude));
+          $scope.map.center = {latitude: $scope.map.markers[0].latitude, longitude: $scope.map.markers[0].longitude};
+        }, 5000);
         //$scope.map.enableDragging();
 
     /*$scope.k = 1;
@@ -231,6 +181,32 @@ angular.module('MyApp')
     // *******************
 
       uiGmapGoogleMapApi.then(function(maps) {
+
+        var myLatLng = [];
+        console.log(cords);
+        console.log(cords[0][0]);
+        console.log(cords[0][1]);
+
+        for (var i = 0; i < cords.length; i++) {
+              myLatLng.push(new google.maps.LatLng({lat: cords[i][0], lng: cords[i][1]}));
+        }
+
+        $scope.polylines = [
+                {
+                    id: 1,
+                    path: myLatLng,
+                    editable: false,
+                    draggable: false,
+                    geodesic: true,
+                    visible: true,
+                    stroke: {
+                        color: '#6060FB',
+                        weight: 3
+                    },
+                    visible: true,
+                }
+            ];
+
 
         $scope.updateInfo = function(){
           //console.log("!");
@@ -294,7 +270,9 @@ angular.module('MyApp')
           $scope.goTo();
         }
 
-        $scope.animateCar($scope.map.markers[0], cords, 50)
+        $scope.animateCar($scope.map.markers[0], cords, 50);
+
+
 
         //panTo function needed!
 
