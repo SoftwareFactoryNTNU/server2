@@ -27,6 +27,8 @@
           <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" events="map.events">
             <ui-gmap-markers models="map.markers" coords="'self'">
             </ui-gmap-markers>
+            <ui-gmap-polyline ng-repeat="p in polylines" path="p.path" stroke="p.stroke" visible='p.visible' ></ui-gmap-polyline>
+            <!--</ui-gmap-google-map>-->
           </ui-gmap-google-map>
         </div>
       </div>

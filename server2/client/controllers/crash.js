@@ -1,5 +1,68 @@
 angular.module('MyApp')
   .controller('CrashCtrl', function($scope, $http, $auth, $alert, $cookies, $state, Account, $interval, Note, $timeout, $mdDialog, $mdMedia , $window, uiGmapGoogleMapApi) {
+    $scope.polylines = [
+            {
+                id: 1,
+                path: [
+                    {
+                        latitude: 45,
+                        longitude: -74
+                    },
+                    {
+                        latitude: 30,
+                        longitude: -89
+                    },
+                    {
+                        latitude: 37,
+                        longitude: -122
+                    },
+                    {
+                        latitude: 60,
+                        longitude: -95
+                    }
+                ],
+                stroke: {
+                    color: '#6060FB',
+                    weight: 3
+                },
+
+                visible: true,
+
+            },
+            {
+                id: 2,
+                path: [
+                    {
+                        latitude: 47,
+                        longitude: -74
+                    },
+                    {
+                        latitude: 32,
+                        longitude: -89
+                    },
+                    {
+                        latitude: 39,
+                        longitude: -122
+                    },
+                    {
+                        latitude: 62,
+                        longitude: -95
+                    }
+                ],
+                stroke: {
+                    color: '#6060FB',
+                    weight: 3
+                },
+
+
+
+            }
+        ];
+
+
+
+
+
 
     //      NOTES
     // ----------------------------------------
@@ -145,12 +208,15 @@ angular.module('MyApp')
       $scope.map = {
             center: {latitude: $scope.map_coordinates[0][0],longitude: $scope.map_coordinates[0][1]},
             zoom: 11,
+            draggable: true,
             markers: [{
               id: '123',
               latitude: $scope.map_coordinates[0][0],
               longitude: $scope.map_coordinates[0][1]
             }]
         };
+
+        //$scope.map.enableDragging();
 
     /*$scope.k = 1;
     $interval(function() {
@@ -230,6 +296,7 @@ angular.module('MyApp')
 
         $scope.animateCar($scope.map.markers[0], cords, 50)
 
+        //panTo function needed!
 
         var start = new google.maps.LatLng(cords[0][0], cords[0][1]);
         var dest = new google.maps.LatLng(cords[1][0], cords[1][1]);
