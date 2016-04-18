@@ -1,3 +1,1 @@
-# server2
-
-**discontinued**
+# server2 - discontinued
